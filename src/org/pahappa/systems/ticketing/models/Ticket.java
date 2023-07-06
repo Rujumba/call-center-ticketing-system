@@ -14,7 +14,6 @@ import org.pahappa.systems.ticketing.constants.TicketStatus;
  */
 public class Ticket {
     public String ticketId;
-    public String ticketName;
     public String ticketDescription;
     public TicketStatus ticketStatus;
     public TicketPriority ticketPriority;

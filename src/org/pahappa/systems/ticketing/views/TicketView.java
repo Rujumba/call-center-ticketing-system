@@ -5,6 +5,7 @@ import org.pahappa.systems.ticketing.models.*;
 // import org.pahappa.systems.ticketing.services.TicketService;
 import org.pahappa.systems.ticketing.services.impl.TicketServiceImpl;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class TicketView implements BaseTicketView {
@@ -214,6 +215,17 @@ public class TicketView implements BaseTicketView {
 
     @Override
     public void getAllTickets() {
+        System.out.println("********* All Tickets *********\n\n");
+        List<Ticket> tickets = ticketServiceImpl.getAllTickets();
+        for (Ticket ticket : tickets) {
+
+            System.out.println("****Record" + (tickets.indexOf(ticket) + 1) + "****" );
+            System.out.println("Ticket ID: " + ticket.ticketId + "\n" + "Client Name: " + ticket.clientName + "\n"
+                    + "Contact: " + ticket.clientContact + "\n" + "Description: " + ticket.ticketDescription + "\n"
+                    + "Category: " + ticket.ticketCategory + "\n"
+                    + "Priority: " + ticket.ticketPriority + "\n" + "Status: " + ticket.ticketStatus + "\n");
+
+        }
 
     }
 
