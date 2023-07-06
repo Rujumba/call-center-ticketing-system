@@ -156,8 +156,6 @@ public class TicketView implements BaseTicketView {
                     case 2:
                         obj.ticketCategory = TicketCategory.SUPPORT_ASSISTANCE;
                         break;
-                    case 3:
-                        break;
                     default:
                         System.out.println("\nInvalid choice of priority. Please try again.");
                         break;
