@@ -135,10 +135,10 @@ public class TicketView implements BaseTicketView {
         /*---------------------TicketCategory----------------------------- */
 
         boolean valid1 = false;
-        int j = 0;
+
         maxAttempt = 0;
         while (valid == true && maxAttempt < 3 && valid1 == false) {
-
+            int j = 0;
             System.out.println("\nSelect ticket category");
 
             for (TicketCategory ticketCategory : TicketCategory.values()) {
@@ -171,11 +171,10 @@ public class TicketView implements BaseTicketView {
 
         /*---------------------TicketStatus----------------------------- */
 
-        int i = 0;
         boolean valid2 = false;
         maxAttempt = 0;
         while (valid == true && valid1 == true && valid2 == false && maxAttempt < 3) {
-
+            int i = 0;
             System.out.println("\nSelect ticket status");
 
             for (TicketStatus ticketStatus : TicketStatus.values()) {
@@ -219,7 +218,7 @@ public class TicketView implements BaseTicketView {
         List<Ticket> tickets = ticketServiceImpl.getAllTickets();
         for (Ticket ticket : tickets) {
 
-            System.out.println("****Record" + (tickets.indexOf(ticket) + 1) + "****" );
+            System.out.println("****Record" + (tickets.indexOf(ticket) + 1) + "****");
             System.out.println("Ticket ID: " + ticket.ticketId + "\n" + "Client Name: " + ticket.clientName + "\n"
                     + "Contact: " + ticket.clientContact + "\n" + "Description: " + ticket.ticketDescription + "\n"
                     + "Category: " + ticket.ticketCategory + "\n"
@@ -231,6 +230,44 @@ public class TicketView implements BaseTicketView {
 
     @Override
     public void getTicketsOfStatus() {
+
+        System.out.println("********* Tickets of Status *********\n\n");
+
+        boolean valid = false;
+
+        String priorityString;
+        while (valid == false) {
+            int k = 0;
+            System.out.println("\nSelect ticket status");
+            for (TicketStatus ticketStatus : TicketStatus.values()) {
+                System.out.println(++k + ". " + ticketStatus.name());
+            }
+            System.out.println("Enter your choice: ");
+            priorityString = scanner.nextLine();
+
+            if (priorityString.matches("[0-9]+")) {
+                int priority = Integer.parseInt(priorityString);
+                switch (priority) {
+                    case 1:
+                        ticketServiceImpl.getTicketsOfStatus(TicketStatus.OPEN);
+                        break;
+                    case 2:
+                        ticketServiceImpl.getTicketsOfStatus(TicketStatus.INPROGRESS);
+                        break;
+                    case 3:
+                        ticketServiceImpl.getTicketsOfStatus(TicketStatus.RESOLVED);
+                        break;
+                    default:
+                        System.out.println("\nInvalid choice of priority. Please try again.");
+                        break;
+
+                }
+                valid = true;
+            } else {
+                System.out.println("Strings are not allowed");
+
+            }
+        }
 
     }
 

@@ -33,6 +33,18 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public List<Ticket> getTicketsOfStatus(TicketStatus ticketStatus) {
+
+        for (Ticket ticket : tickets) {
+            if (ticket.ticketStatus == ticketStatus) {
+                System.out.println("\n\n****Record" + (tickets.indexOf(ticket) + 1) + "****");
+                System.out.println("Ticket ID: " + ticket.ticketId + "\n" + "Client Name: " + ticket.clientName + "\n"
+                        + "Contact: " + ticket.clientContact + "\n" + "Description: " + ticket.ticketDescription + "\n"
+                        + "Category: " + ticket.ticketCategory + "\n"
+                        + "Priority: " + ticket.ticketPriority + "\n");
+            } else {
+                System.out.println("\nNo tickets found\n\n");
+            }
+        }
         return null;
     }
 
