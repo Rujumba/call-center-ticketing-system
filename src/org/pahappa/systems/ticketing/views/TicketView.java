@@ -274,6 +274,196 @@ public class TicketView implements BaseTicketView {
     @Override
     public void updateTicket() {
 
+        List<Ticket> tickets = ticketServiceImpl.getAllTickets();
+
+        Ticket update = new Ticket();
+
+        System.out.println("********* Update Ticket *********\n\n");
+
+        getAllTickets();
+
+        System.out.println("Enter the ticket id of the ticket you want to update: ");
+        // check if the ticket id exists
+        update.ticketId = scanner.nextLine();
+
+        for (Ticket ticket : tickets) {
+            if (ticket.ticketId.equals(update.ticketId)) {
+
+                System.out.println("Enter select fields you want to update: ");
+                System.out.println("1. Client Name");
+                System.out.println("2. Client Contact");
+                System.out.println("3. Ticket Description");
+                System.out.println("4. Ticket Category");
+                System.out.println("5. Ticket Priority");
+                System.out.println("6. Ticket Status");
+                System.out.println("7. All");
+
+                System.out.println("Enter your choice: ");
+
+                String choice = scanner.nextLine();
+
+                while (!choice.matches("[0-9]+")) {
+                    System.out.println("Enter a valid choice: ");
+                    choice = scanner.nextLine();
+                }
+
+                int choiceInt = Integer.parseInt(choice);
+
+                switch (choiceInt) {
+                    // create a method for each case
+                    case 1:
+                        System.out.println("Enter new client name: ");
+
+                        update.clientName = scanner.nextLine();
+
+                        ticket.clientName = update.clientName;
+
+                        ticketServiceImpl.updateTicket(update);
+                        break;
+                    case 2:
+                        System.out.println("Enter new client contact: ");
+
+                        update.clientContact = scanner.nextLine();
+
+                        ticket.clientContact = update.clientContact;
+
+                        ticketServiceImpl.updateTicket(update);
+                        break;
+                    case 3:
+                        System.out.println("Enter new ticket description: ");
+                        update.ticketDescription = scanner.nextLine();
+
+                        ticket.ticketDescription = update.ticketDescription;
+
+                        ticketServiceImpl.updateTicket(update);
+                        break;
+                    case 4:
+                        System.out.println("************** Update Ticket Category **************\n\n");
+                        int i = 0;
+                        for (TicketCategory ticketCategory : TicketCategory.values()) {
+                            System.out.println(++i + ". " + ticketCategory.name());
+                        }
+
+                        System.out.println("Enter new ticket category: ");
+
+                        boolean scanForTrue = false;
+                        i = 0;
+                        while (scanForTrue == false && i < 3) {
+                            String categoryNum = scanner.nextLine();
+                            if (categoryNum.matches("[0-9]+")) {
+                                update.ticketCategory = TicketCategory.values()[Integer.parseInt(categoryNum) - 1];
+                                ++i;
+                                scanForTrue = true;
+                            } else {
+                                System.out.println("Invalid choice of ticket category. Please try again.");
+
+                                System.out.println("Enter new ticket category: ");
+                            }
+                        }
+
+                        if (scanForTrue == true) {
+
+                            ticket.ticketCategory = update.ticketCategory;
+                            ticketServiceImpl.updateTicket(update);
+
+                        }
+
+                        break;
+                    case 5:
+                        System.out.println("************** Update Ticket Priority **************\n\n");
+                        int j = 0;
+                        for (TicketPriority ticketPriority : TicketPriority.values()) {
+                            System.out.println(++j + ". " + ticketPriority.name());
+                        }
+
+                        System.out.println("Enter new ticket priority: ");
+
+                        boolean scanForTrue1 = false;
+                        j = 0;
+
+                        while (scanForTrue1 == false && j < 3) {
+                            String priorityNum = scanner.nextLine();
+                            if (priorityNum.matches("[0-9]+")) {
+                                update.ticketPriority = TicketPriority.values()[Integer.parseInt(priorityNum) - 1];
+                                ++j;
+                                scanForTrue1 = true;
+                            } else {
+                                System.out.println("Invalid choice of ticket priority. Please try again.\n");
+                                System.out.println("Enter new ticket priority: ");
+                            }
+                        }
+
+                        if (scanForTrue1 == true) {
+
+                            ticket.ticketPriority = update.ticketPriority;
+                            ticketServiceImpl.updateTicket(update);
+
+                        }
+                        break;
+                    case 6:
+                        System.out.println("************** Update Ticket Status **************\n\n");
+                        int k = 0;
+                        for (TicketStatus ticketStatus : TicketStatus.values()) {
+                            System.out.println(++k + ". " + ticketStatus.name());
+                        }
+
+                        System.out.println("Select new ticket status: ");
+
+                        boolean scanForTrue2 = false;
+                        k = 0;
+
+                        while (scanForTrue2 == false && k < 3) {
+                            String statusNum = scanner.nextLine();
+                            if (statusNum.matches("[0-9]+")) {
+                                update.ticketStatus = TicketStatus.values()[Integer.parseInt(statusNum) - 1];
+                                ++k;
+                                scanForTrue2 = true;
+                            } else {
+                                System.out.println("Invalid choice of ticket status. Please try again.\n");
+                                System.out.println("Enter new ticket status: ");
+                            }
+                        }
+
+                        if (scanForTrue2 == true) {
+
+                            ticket.ticketStatus = update.ticketStatus;
+                            ticketServiceImpl.updateTicket(update);
+
+                        }
+
+                        break;
+                    case 7:
+                        try {
+                            System.out.println(
+                                    "The previous ticket is going to be deleted and a new ticket will be created.");
+                            System.out.println("Are you sure you want to continue? Enter (Y/N)");
+
+                            String confirm = scanner.nextLine();
+
+                            if (confirm.equalsIgnoreCase("Y")) {
+                                // pass the index of the ticket to be deleted
+                                ticketServiceImpl.deleteTicket(tickets.indexOf(ticket));
+
+                                createTicket();
+                            } else if (confirm.equalsIgnoreCase("N")) {
+                                System.out.println("Ticket not updated");
+                            } else {
+                                System.out.println("Invalid choice");
+                            }
+                        } catch (Exception e) {
+                            // TODO: handle exception
+                        }
+                        break;
+                    default:
+                        System.out.println("Invalid choice");
+                        break;
+                }
+
+            } else {
+                System.out.println("Ticket not found");
+            }
+        }
+
     }
 
     @Override

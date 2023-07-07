@@ -51,6 +51,8 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public void updateTicket(Ticket updatedTicket) {
 
+        System.out.println("\nTicket updated successfully!\n");
+
     }
 
     @Override
