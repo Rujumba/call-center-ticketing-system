@@ -57,6 +57,9 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public void deleteTicket(int index) {
+        // remove ticket from the list
+        tickets.remove(index);
+        System.out.println("\nTicket deleted successfully!\n");
 
     }
 }
