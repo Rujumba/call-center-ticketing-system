@@ -2,7 +2,7 @@ package org.pahappa.systems.ticketing.views;
 
 import org.pahappa.systems.ticketing.constants.*;
 import org.pahappa.systems.ticketing.models.*;
-// import org.pahappa.systems.ticketing.services.TicketService;
+import org.pahappa.systems.ticketing.services.TicketService;
 import org.pahappa.systems.ticketing.services.impl.TicketServiceImpl;
 
 import java.util.List;
@@ -10,13 +10,12 @@ import java.util.Scanner;
 
 public class TicketView implements BaseTicketView {
 
-    // private final TicketService ticketService;
+    private final TicketService ticketService;
     private final Scanner scanner;
-    TicketServiceImpl ticketServiceImpl = new TicketServiceImpl();
     int maxAttempt = 0;
 
     public TicketView() {
-        // this.ticketService = new TicketServiceImpl();
+        this.ticketService = new TicketServiceImpl();
         this.scanner = new Scanner(System.in);
     }
 
@@ -82,17 +81,17 @@ public class TicketView implements BaseTicketView {
         /*---------------------ClientName----------------------------- */
 
         System.out.println("\nEnter the name of the client:");
-        obj.clientName = scanner.nextLine();
+        obj.setClientName(scanner.nextLine());
 
         /*---------------------TicketDescription----------------------------- */
 
         System.out.println("\nEnter the description of the ticket:");
-        obj.ticketDescription = scanner.nextLine();
+        obj.setTicketDescription(scanner.nextLine());
 
         /*---------------------Client contact----------------------------- */
 
         System.out.println("\nEnter the contact of the client:");
-        obj.clientContact = scanner.nextLine();
+        obj.setClientContact(scanner.nextLine());
 
         /*---------------------Ticket Priority----------------------------- */
 
@@ -112,13 +111,13 @@ public class TicketView implements BaseTicketView {
                 int priority = Integer.parseInt(priorityString);
                 switch (priority) {
                     case 1:
-                        obj.ticketPriority = TicketPriority.LOW;
+                        obj.setTicketPriority(TicketPriority.LOW);
                         break;
                     case 2:
-                        obj.ticketPriority = TicketPriority.MEDIUM;
+                        obj.setTicketPriority(TicketPriority.MEDIUM);
                         break;
                     case 3:
-                        obj.ticketPriority = TicketPriority.HIGH;
+                        obj.setTicketPriority(TicketPriority.HIGH);
                         break;
                     default:
                         System.out.println("\nInvalid choice of priority. Please try again.");
@@ -152,10 +151,10 @@ public class TicketView implements BaseTicketView {
                 int categoryInt = Integer.parseInt(category);
                 switch (categoryInt) {
                     case 1:
-                        obj.ticketCategory = TicketCategory.COMPLAINT;
+                        obj.setTicketCategory(TicketCategory.COMPLAINT);
                         break;
                     case 2:
-                        obj.ticketCategory = TicketCategory.SUPPORT_ASSISTANCE;
+                        obj.setTicketCategory(TicketCategory.SUPPORT_ASSISTANCE);
                         break;
                     default:
                         System.out.println("\nInvalid choice of priority. Please try again.");
@@ -190,19 +189,19 @@ public class TicketView implements BaseTicketView {
                 int statusInt = Integer.parseInt(status);
                 switch (statusInt) {
                     case 1:
-                        obj.ticketStatus = TicketStatus.OPEN;
+                        obj.setTicketStatus(TicketStatus.OPEN);
                         break;
                     case 2:
-                        obj.ticketStatus = TicketStatus.INPROGRESS;
+                        obj.setTicketStatus(TicketStatus.INPROGRESS);
                         break;
                     case 3:
-                        obj.ticketStatus = TicketStatus.RESOLVED;
+                        obj.setTicketStatus(TicketStatus.RESOLVED);
                         break;
                     default:
                         System.out.println("\nInvalid choice of priority. Please try again.");
                         break;
                 }
-                ticketServiceImpl.createTicket(obj);
+                ticketService.createTicket(obj);
                 valid2 = true;
             } else {
                 System.out.println("Words arent allowed" + "\n\n");
@@ -214,15 +213,16 @@ public class TicketView implements BaseTicketView {
 
     @Override
     public void getAllTickets() {
-        System.out.println("********* All Tickets *********\n\n");
-        List<Ticket> tickets = ticketServiceImpl.getAllTickets();
+        System.out.println("********* Get All Tickets *********\n\n");
+        List<Ticket> tickets = ticketService.getAllTickets();
         for (Ticket ticket : tickets) {
-
-            System.out.println("****Record" + (tickets.indexOf(ticket) + 1) + "****");
-            System.out.println("Ticket ID: " + ticket.ticketId + "\n" + "Client Name: " + ticket.clientName + "\n"
-                    + "Contact: " + ticket.clientContact + "\n" + "Description: " + ticket.ticketDescription + "\n"
-                    + "Category: " + ticket.ticketCategory + "\n"
-                    + "Priority: " + ticket.ticketPriority + "\n" + "Status: " + ticket.ticketStatus + "\n");
+            System.out.println("Ticket ID: " + ticket.getTicketId());
+            System.out.println("Client Name: " + ticket.getClientName());
+            System.out.println("Ticket Description: " + ticket.getTicketDescription());
+            System.out.println("Client Contact: " + ticket.getClientContact());
+            System.out.println("Ticket Priority: " + ticket.getTicketPriority());
+            System.out.println("Ticket Category: " + ticket.getTicketCategory());
+            System.out.println("Ticket Status: " + ticket.getTicketStatus());
 
         }
 
@@ -249,13 +249,13 @@ public class TicketView implements BaseTicketView {
                 int priority = Integer.parseInt(priorityString);
                 switch (priority) {
                     case 1:
-                        ticketServiceImpl.getTicketsOfStatus(TicketStatus.OPEN);
+                        ticketService.getTicketsOfStatus(TicketStatus.OPEN);
                         break;
                     case 2:
-                        ticketServiceImpl.getTicketsOfStatus(TicketStatus.INPROGRESS);
+                        ticketService.getTicketsOfStatus(TicketStatus.INPROGRESS);
                         break;
                     case 3:
-                        ticketServiceImpl.getTicketsOfStatus(TicketStatus.RESOLVED);
+                        ticketService.getTicketsOfStatus(TicketStatus.RESOLVED);
                         break;
                     default:
                         System.out.println("\nInvalid choice of priority. Please try again.");
@@ -274,7 +274,7 @@ public class TicketView implements BaseTicketView {
     @Override
     public void updateTicket() {
 
-        List<Ticket> tickets = ticketServiceImpl.getAllTickets();
+        List<Ticket> tickets = ticketService.getAllTickets();
 
         Ticket update = new Ticket();
 
@@ -284,10 +284,10 @@ public class TicketView implements BaseTicketView {
 
         System.out.println("Enter the ticket id of the ticket you want to update: ");
         // check if the ticket id exists
-        update.ticketId = scanner.nextLine();
+        update.setTicketId(scanner.nextLine());
 
         for (Ticket ticket : tickets) {
-            if (ticket.ticketId.equals(update.ticketId)) {
+            if (ticket.getTicketId().equals(update.getTicketId())) {
 
                 System.out.println("Enter select fields you want to update: ");
                 System.out.println("1. Client Name");
@@ -314,28 +314,28 @@ public class TicketView implements BaseTicketView {
                     case 1:
                         System.out.println("Enter new client name: ");
 
-                        update.clientName = scanner.nextLine();
+                        update.setClientName(scanner.nextLine());
 
-                        ticket.clientName = update.clientName;
+                        ticket.setClientName(update.getClientName());
 
-                        ticketServiceImpl.updateTicket(update);
+                        ticketService.updateTicket(update);
                         break;
                     case 2:
                         System.out.println("Enter new client contact: ");
 
-                        update.clientContact = scanner.nextLine();
+                        update.setClientContact(scanner.nextLine());
 
-                        ticket.clientContact = update.clientContact;
+                        ticket.setClientContact(update.getClientContact());
 
-                        ticketServiceImpl.updateTicket(update);
+                        ticketService.updateTicket(update);
                         break;
                     case 3:
                         System.out.println("Enter new ticket description: ");
-                        update.ticketDescription = scanner.nextLine();
+                        update.setTicketDescription(scanner.nextLine());
 
-                        ticket.ticketDescription = update.ticketDescription;
+                        ticket.setTicketDescription(update.getTicketDescription());
 
-                        ticketServiceImpl.updateTicket(update);
+                        ticketService.updateTicket(update);
                         break;
                     case 4:
                         System.out.println("************** Update Ticket Category **************\n\n");
@@ -351,7 +351,7 @@ public class TicketView implements BaseTicketView {
                         while (scanForTrue == false && i < 3) {
                             String categoryNum = scanner.nextLine();
                             if (categoryNum.matches("[0-9]+")) {
-                                update.ticketCategory = TicketCategory.values()[Integer.parseInt(categoryNum) - 1];
+                                update.setTicketCategory(TicketCategory.values()[Integer.parseInt(categoryNum) - 1]);
                                 ++i;
                                 scanForTrue = true;
                             } else {
@@ -363,8 +363,8 @@ public class TicketView implements BaseTicketView {
 
                         if (scanForTrue == true) {
 
-                            ticket.ticketCategory = update.ticketCategory;
-                            ticketServiceImpl.updateTicket(update);
+                            ticket.setTicketCategory(update.getTicketCategory());
+                            ticketService.updateTicket(update);
 
                         }
 
@@ -384,7 +384,7 @@ public class TicketView implements BaseTicketView {
                         while (scanForTrue1 == false && j < 3) {
                             String priorityNum = scanner.nextLine();
                             if (priorityNum.matches("[0-9]+")) {
-                                update.ticketPriority = TicketPriority.values()[Integer.parseInt(priorityNum) - 1];
+                                update.setTicketPriority(TicketPriority.values()[Integer.parseInt(priorityNum) - 1]);
                                 ++j;
                                 scanForTrue1 = true;
                             } else {
@@ -395,8 +395,8 @@ public class TicketView implements BaseTicketView {
 
                         if (scanForTrue1 == true) {
 
-                            ticket.ticketPriority = update.ticketPriority;
-                            ticketServiceImpl.updateTicket(update);
+                            ticket.setTicketPriority(update.getTicketPriority());
+                            ticketService.updateTicket(update);
 
                         }
                         break;
@@ -415,7 +415,7 @@ public class TicketView implements BaseTicketView {
                         while (scanForTrue2 == false && k < 3) {
                             String statusNum = scanner.nextLine();
                             if (statusNum.matches("[0-9]+")) {
-                                update.ticketStatus = TicketStatus.values()[Integer.parseInt(statusNum) - 1];
+                                update.setTicketStatus(TicketStatus.values()[Integer.parseInt(statusNum) - 1]);
                                 ++k;
                                 scanForTrue2 = true;
                             } else {
@@ -426,8 +426,8 @@ public class TicketView implements BaseTicketView {
 
                         if (scanForTrue2 == true) {
 
-                            ticket.ticketStatus = update.ticketStatus;
-                            ticketServiceImpl.updateTicket(update);
+                            ticket.setTicketStatus(update.getTicketStatus());
+                            ticketService.updateTicket(update);
 
                         }
 
@@ -442,7 +442,7 @@ public class TicketView implements BaseTicketView {
 
                             if (confirm.equalsIgnoreCase("Y")) {
                                 // pass the index of the ticket to be deleted
-                                ticketServiceImpl.deleteTicket(tickets.indexOf(ticket));
+                                ticketService.deleteTicket(tickets.indexOf(ticket));
 
                                 createTicket();
                             } else if (confirm.equalsIgnoreCase("N")) {
@@ -469,16 +469,19 @@ public class TicketView implements BaseTicketView {
     @Override
     public void deleteTicket() {
         try {
-            List<Ticket> tickets = ticketServiceImpl.getAllTickets();
+            List<Ticket> tickets = ticketService.getAllTickets();
             System.out.println("********* Delete Ticket *********\n\n");
 
             for (Ticket ticket : tickets) {
 
                 System.out.println("****Record" + (tickets.indexOf(ticket) + 1) + "****");
-                System.out.println("Ticket ID: " + ticket.ticketId + "\n" + "Client Name: " + ticket.clientName + "\n"
-                        + "Contact: " + ticket.clientContact + "\n" + "Description: " + ticket.ticketDescription + "\n"
-                        + "Category: " + ticket.ticketCategory + "\n"
-                        + "Priority: " + ticket.ticketPriority + "\n" + "Status: " + ticket.ticketStatus + "\n");
+                System.out.println(
+                        "Ticket ID: " + ticket.getTicketId() + "\n" + "Client Name: " + ticket.getClientName() + "\n"
+                                + "Contact: " + ticket.getClientContact() + "\n" + "Description: "
+                                + ticket.getTicketDescription() + "\n"
+                                + "Category: " + ticket.getTicketCategory() + "\n"
+                                + "Priority: " + ticket.getTicketPriority() + "\n" + "Status: "
+                                + ticket.getTicketStatus() + "\n");
 
             }
 
@@ -486,8 +489,8 @@ public class TicketView implements BaseTicketView {
             String ticketId = scanner.nextLine();
 
             for (Ticket ticket : tickets) {
-                if (ticket.ticketId.equals(ticketId)) {
-                    ticketServiceImpl.deleteTicket(tickets.indexOf(ticket));
+                if (ticket.getTicketId().equals(ticketId)) {
+                    ticketService.deleteTicket(tickets.indexOf(ticket));
                 } else {
                     System.out.println("Ticket not found");
                 }
