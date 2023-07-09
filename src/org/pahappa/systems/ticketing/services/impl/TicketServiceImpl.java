@@ -16,7 +16,7 @@ public class TicketServiceImpl implements TicketService {
     public void createTicket(Ticket ticket) {
         // add ticket to the list
         Random random = new Random();
-        ticket.ticketId = "T00" + random.nextInt(1000);
+        ticket.setTicketId("T00" + random.nextInt(1000));
 
         tickets.add(ticket);
 
@@ -35,12 +35,12 @@ public class TicketServiceImpl implements TicketService {
     public List<Ticket> getTicketsOfStatus(TicketStatus ticketStatus) {
 
         for (Ticket ticket : tickets) {
-            if (ticket.ticketStatus == ticketStatus) {
+            if (ticket.getTicketStatus() == ticketStatus) {
                 System.out.println("\n\n****Record" + (tickets.indexOf(ticket) + 1) + "****");
-                System.out.println("Ticket ID: " + ticket.ticketId + "\n" + "Client Name: " + ticket.clientName + "\n"
-                        + "Contact: " + ticket.clientContact + "\n" + "Description: " + ticket.ticketDescription + "\n"
-                        + "Category: " + ticket.ticketCategory + "\n"
-                        + "Priority: " + ticket.ticketPriority + "\n");
+                System.out.println("Ticket ID: " + ticket.getTicketId() + "\n" + "Client Name: " + ticket.getClientName() + "\n"
+                        + "Contact: " + ticket.getClientContact() + "\n" + "Description: " + ticket.getTicketDescription() + "\n"
+                        + "Category: " + ticket.getTicketCategory() + "\n"
+                        + "Priority: " + ticket.getTicketPriority() + "\n");
             } else {
                 System.out.println("\nNo tickets found\n\n");
             }
@@ -57,6 +57,9 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public void deleteTicket(int index) {
+        // remove ticket from the list
+        tickets.remove(index);
+        System.out.println("\nTicket deleted successfully!\n");
 
     }
 }
